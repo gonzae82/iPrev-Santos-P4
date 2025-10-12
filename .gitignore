@@ -3,3 +3,4 @@ __docs__/
 node_modules/
 *.log
 *.env
+__public__/

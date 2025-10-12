@@ -1,8 +1,9 @@
 # Uso de Tecnologias Inteligentes para Monitoramento de Custos em Instituições Públicas: O Caso do IPREVSANTOS
-
-
 Trabalho desenvolvido para o Projeto Integrador da UNIVESP na disciplina Projeto Integrador.
 <br><br>
+
+## Instituto de Previdência de Santos
+<img src="public/img/iprevsantos.png" alt="IPREVSANTOS" title="IPREVSANTOS" width="90" height="80"/>
 
 ## Descrição
 
@@ -16,14 +17,15 @@ Os resultados são apresentados em dashboards interativos construídos com **Pow
 ## Badges
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=yellow)](https://www.python.org/)
-[![CI - Testes e Deploy](https://github.com/gonzae82/iPrevSantos-P3/actions/workflows/ci.yml/badge.svg)](https://github.com/gonzae82/iPrevSantos-P3/actions/workflows/ci.yml)
 
 ## Tecnologias Utilizadas
 <div>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original-wordmark.svg" alt="Python" title="Python" width="90" height="80"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-plain-wordmark.svg" alt="Streamlit" title="Streamlit" width="90" height="80"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original-wordmark.svg" alt="Pandas" title="Pandas" width="90" height="80"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-learn" title="Scikit-learn" width="75" height="70"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original-wordmark.svg" alt="Jupyter Notebook" title="Jupyter Notebook" width="90" height="80"/>
+  
 
 </div>
 <br><br>
