@@ -1,0 +1,5 @@
+__docs__/
+/vendor/
+node_modules/
+*.log
+*.env
