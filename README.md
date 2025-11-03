@@ -50,7 +50,7 @@ Os resultados são apresentados em dashboards interativos construídos com **Pow
 
 <br><br><br>
 
-## Orientadora
+## Orientador
 
 Omar S. Lakis Santos
 <br><br>
