@@ -9,7 +9,7 @@ from datetime import datetime, date
 
 # --- CONFIGURAÇÕES DO BANCO DE DADOS ---
 DB_USER = "root"
-DB_PASS = "iprev123"
+DB_PASS = "rootpassword"
 DB_HOST = "mysql-iprevsantos"
 DB_PORT = "3306"
 DB_NAME = "iprev_dados"
