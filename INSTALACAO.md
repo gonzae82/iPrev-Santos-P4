@@ -90,7 +90,8 @@ sudo docker compose up --build -d
 
 #### Acessando o Importador de Dados (Streamlit)
 Abra seu navegador e acesse o seguinte endereço:
-* **http://localhost:8501**
+* **http://localhost:8501** Para importar os dados
+* **http://localhost:8502** Para Prever os dados Futuros
 
 #### Acessando o Banco de Dados Diretamente (MySQL)
 Para depuração ou consultas manuais, você pode acessar o cliente MySQL diretamente no container.

@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from sqlalchemy import create_engine
 from io import StringIO
+import re 
+from urllib.parse import urlparse # Necessário se usássemos o módulo urllib
 
 # --- CONFIGURAÇÕES DO BANCO DE DADOS ---
 DB_USER = "root"
@@ -9,9 +11,9 @@ DB_PASS = "iprev123"
 DB_HOST = "mysql-iprevsantos"
 DB_PORT = "3306"
 DB_NAME = "iprev_dados"
-DB_TABLE = "despesas"
+DB_TABLE = "despesas" 
 
-# --- FUNÇÃO DE CONEXÃO ---
+# --- FUNÇÃO DE CONEXÃO (MANTIDA) ---
 def get_db_engine():
     """Cria e retorna uma engine de conexão SQLAlchemy."""
     try:
@@ -22,29 +24,57 @@ def get_db_engine():
         st.error(f"Erro ao conectar ao banco de dados: {e}")
         return None
 
-# --- FUNÇÃO DE LIMPEZA E TRANSFORMAÇÃO ---
-def process_data(df):
-    """Ajusta os tipos de dados da planilha para importação."""
+# --- FUNÇÃO ROBUSTA PARA LIMPAR NOMES DE COLUNA (MANTIDA) ---
+def clean_column_name(col):
+    """Converte nomes de coluna para o padrão MySQL (minúsculas, sem acento, com underscore)."""
     
-    # Lista de colunas que devem ser numéricas (DECIMAL no DB)
-    money_columns = [
-        'VENCIMENTO', 'FUNCAO_RATIFICADA', 'GDA', 'S_13_SAL', 'S_13_SAL_2', 'ATS', 
-        'REM_FERIAS', 'AUX_ALIM', 'FALTAS', 'SOMA', 'PATR_CAPEP', 'PATR_IPREV', 
-        'PATR_INSS', 'PATR_CX_PREV', 'SOMA_2', 'CUSTO_TOTAL', 'CUSTO_HORA', 
-        'CAPEP', 'IPREV', 'INSS', 'CX_PREVID'
-    ]
+    col = col.lower()
+    col = col.replace('ê', 'e').replace('ã', 'a').replace('ç', 'c').replace('á', 'a').replace('ó', 'o')
+    col = re.sub(r'[^a-z0-9_]+', '_', col)
+    col = col.strip('_')
+    col = col.replace('__', '_')
+    
+    return col
 
-    # Limpa e converte cada coluna monetária de forma segura
+# --- FUNÇÃO DE LIMPEZA E TRANSFORMAÇÃO DE DADOS (MANTIDA) ---
+def process_data(df):
+    """Ajusta os tipos de dados da planilha para importação, focando na coluna CUSTO e MES."""
+    
+    money_columns = ['custo'] 
+    
+    if 'mes' in df.columns:
+        df['mes'] = pd.to_datetime(df['mes'], errors='coerce')
+    
     for col in money_columns:
         if col in df.columns:
-            cleaned_col = df[col].astype(str).str.replace(',', '.')
+            cleaned_col = (
+                df[col].astype(str)
+                .str.replace(r'R\$\s*', '', regex=True)
+                .str.replace(',', '', regex=False)
+            )
             df[col] = pd.to_numeric(cleaned_col, errors='coerce').fillna(0.0)
             
     return df
 
+# --- NOVO: FUNÇÃO PARA CONSTRUIR O LINK ---
+def build_prediction_link():
+    
+    host = "localhost"
+    PRED_PORT = "8502"
+    PRED_PATH = ""
+    
+    # Constrói o link completo com o host e porta fixados
+    return f"http://{host}:{PRED_PORT}/{PRED_PATH}"
+
+
 # --- INTERFACE DO STREAMLIT ---
 st.set_page_config(page_title="Importador IPREVSANTOS", layout="wide")
-st.title("🚀 Importador de Dados")
+st.title("🚀 Importador de Dados (TABELA FATO TAXAS & FUNDO)")
+
+# --- BOTÃO DE NAVEGAÇÃO ---
+link_predicao = build_prediction_link()
+st.link_button("📊 Ir para a Predição de Custos", link_predicao)
+st.markdown("---")
 
 uploaded_file = st.file_uploader(
     "Selecione a planilha",
@@ -52,39 +82,40 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file:
-    st.markdown("---")
     st.subheader("🕵️‍♂️ Análise do Arquivo")
     
-    tab1, tab2, tab3, tab4 = st.tabs(["1. Leitura do Arquivo", "2. Limpeza Mínima", "3. Conversão de Tipos", "4. Verificação Final"])
+    tab1, tab2, tab3, tab4 = st.tabs(["1. Leitura do Arquivo", "2. Limpeza Nomes", "3. Conversão de Tipos", "4. Verificação Final"])
     
     try:
         # ETAPA 1: Leitura do Arquivo
         with tab1:
             st.write("Lendo o arquivo e exibindo as primeiras 5 linhas e as colunas originais.")
             if uploaded_file.name.endswith('.csv'):
-                df_raw = pd.read_csv(uploaded_file, sep=';')
+                try:
+                    df_raw = pd.read_csv(uploaded_file, sep='\t', encoding='utf-8')
+                except:
+                    df_raw = pd.read_csv(uploaded_file, sep=';', encoding='utf-8')
             else:
                 df_raw = pd.read_excel(uploaded_file)
+            
             st.dataframe(df_raw.head())
-            st.write("**Colunas Lidas:**")
+            st.write("**Colunas Lidas (RAW):**")
             st.code(df_raw.columns.tolist())
-            st.write(f"**Dimensões:** {df_raw.shape[0]} linhas, {df_raw.shape[1]} colunas")
 
         # ETAPA 2: Limpeza Mínima dos Nomes das Colunas
         with tab2:
-            st.write("Removendo apenas espaços em branco do início e fim dos nomes das colunas.")
+            st.write("Ajustando nomes de colunas para o padrão do banco de dados.")
             df_cleaned_cols = df_raw.copy()
-            # REMOVIDA A CONVERSÃO PARA MAIÚSCULAS
-            df_cleaned_cols.columns = [col.strip() for col in df_raw.columns]
-            st.write("**Colunas Após Limpeza Mínima:**")
+            df_cleaned_cols.columns = [clean_column_name(col) for col in df_raw.columns]
+            st.write("**Colunas Após Limpeza (BD Standard):**")
             st.code(df_cleaned_cols.columns.tolist())
 
         # ETAPA 3: Conversão dos Tipos de Dados
         with tab3:
-            st.write("Convertendo colunas financeiras para formato numérico.")
-            df_processed = process_data(df_cleaned_cols.copy())
+            st.write("Convertendo colunas financeiras (custo) para formato numérico.")
+            df_processed = process_data(df_cleaned_cols.copy()) 
             st.write("**Amostra dos Dados Após Conversão:**")
-            st.dataframe(df_processed.head())
+            st.dataframe(df_processed[['custo', 'ano', 'mes']].head())
             
             buffer = StringIO()
             df_processed.info(buf=buffer)
@@ -109,10 +140,13 @@ if uploaded_file:
                 st.write("**Colunas na Interseção (que serão importadas):**")
                 st.code(intersecting_columns)
                 
-                missing_in_db = [col for col in file_columns if col not in db_columns]
-                if missing_in_db:
-                    st.warning("**Atenção: Colunas no arquivo que não existem no banco:**")
-                    st.code(missing_in_db)
+                if 'id' in intersecting_columns:
+                    intersecting_columns.remove('id')
+                    
+                missing_in_file = [col for col in db_columns if col not in file_columns and col != 'id']
+                if missing_in_file:
+                    st.warning(f"⚠️ **Atenção: Colunas do BD que faltam no arquivo (serão preenchidas com NULL/Default):** {missing_in_file}")
+
 
         st.markdown("---")
         # Botão de importação
@@ -120,25 +154,30 @@ if uploaded_file:
             engine = get_db_engine()
             if engine:
                 db_columns = pd.read_sql(f"SELECT * FROM {DB_TABLE} LIMIT 0", engine).columns.tolist()
-                df_to_import = df_processed[[col for col in db_columns if col in df_processed.columns]]
+                
+                cols_to_import = [col for col in db_columns if col in df_processed.columns]
+                if 'id' in cols_to_import:
+                    cols_to_import.remove('id')
+                
+                df_to_import = df_processed[cols_to_import]
 
                 if df_to_import.empty or len(df_to_import.columns) == 0:
-                     st.error("ERRO: Importação interrompida. Nenhuma coluna correspondente foi encontrada. Verifique a aba '4. Verificação Final' e garanta que os nomes das colunas (incluindo maiúsculas/minúsculas) são idênticos.")
+                     st.error("ERRO: Importação interrompida. Nenhuma coluna de dados correspondente foi encontrada. Verifique a aba '4. Verificação Final'.")
                 else:
                     with st.spinner("Importando dados..."):
                         df_to_import.to_sql(DB_TABLE, con=engine, if_exists='append', index=False)
                         st.success("🎉 Importação concluída com sucesso!")
-                        #st.balloons()
+
     except Exception as e:
         st.error(f"Erro Crítico durante o processamento: {e}")
 
-# --- VISUALIZAÇÃO DOS DADOS NO BANCO ---
+# --- VISUALIZAÇÃO DOS DADOS NO BANCO
 st.markdown("---")
-with st.expander(f"Visualização dos Dados Atuais no Banco de Dados: Tabela :: {DB_TABLE}", expanded=True):
+with st.expander(f"Visualização dos Dados Atuais no Banco de Dados: Tabela :: {DB_TABLE}", expanded=False):
     engine = get_db_engine()
     if engine:
         try:
-            df_from_db = pd.read_sql(f"SELECT * FROM {DB_TABLE} ORDER BY id DESC", engine)
+            df_from_db = pd.read_sql(f"SELECT * FROM {DB_TABLE} ORDER BY id DESC LIMIT 10", engine)
             st.dataframe(df_from_db)
         except Exception as e:
-            st.warning("Não foi possível carregar os dados do banco.")
+            st.warning(f"Não foi possível carregar os dados do banco. Erro: {e}")

@@ -1,6 +1,4 @@
 # docker-compose.yml
-version: '3.8'
-
 services:
   mysql-iprevsantos:
     image: mysql:8.0
@@ -10,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: iprev123
       MYSQL_DATABASE: iprev_dados
     ports:
-      - "3307:3306"
+      - "3308:3306"
     volumes:
       - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql_data:/var/lib/mysql
@@ -21,7 +19,9 @@ services:
     restart: always
     ports:
       - "8501:8501"  # Mapeia a porta do Streamlit
+      - "8502:8502"  # Mapeia a porta do Streamlit
       - "8888:8888"  # Mapeia a porta do Jupyter Notebook
+
     volumes:
       - .:/app  # Mapeia a pasta atual para /app dentro do container
     depends_on:

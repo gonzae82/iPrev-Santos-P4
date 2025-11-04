@@ -6,36 +6,19 @@ CREATE DATABASE IF NOT EXISTS iprev_dados;
 -- Seleciona o banco de dados para uso
 USE iprev_dados;
 
--- Cria a tabela para armazenar as despesas com a nova estrutura
-CREATE TABLE IF NOT EXISTS despesas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    MES INT NULL,
-    ANO INT NULL,
-    SERVIDOR VARCHAR(255) NULL,
-    CARGO VARCHAR(255) NULL,
-    DESCRICAO_FUNCAO_GRATIFICADA VARCHAR(255) NULL,
-    ABREV VARCHAR(50) NULL,
-    QTDE INT NULL,
-    DEPARTAMENTOS VARCHAR(255) NULL,
-    VENCIMENTO DECIMAL(10, 2) NULL,
-    FUNCAO_RATIFICADA DECIMAL(10, 2) NULL,
-    GDA DECIMAL(10, 2) NULL,
-    S_13_SAL DECIMAL(10, 2) NULL,       
-    S_13_SAL_2 DECIMAL(10, 2) NULL,
-    ATS DECIMAL(10, 2) NULL,
-    REM_FERIAS DECIMAL(10, 2) NULL,
-    AUX_ALIM DECIMAL(10, 2) NULL,
-    FALTAS DECIMAL(10, 2) NULL,
-    SOMA DECIMAL(10, 2) NULL,
-    PATR_CAPEP DECIMAL(10, 2) NULL,
-    PATR_IPREV DECIMAL(10, 2) NULL,
-    PATR_INSS DECIMAL(10, 2) NULL,
-    PATR_CX_PREV DECIMAL(10, 2) NULL,
-    SOMA_2 DECIMAL(10, 2) NULL,
-    CUSTO_TOTAL DECIMAL(10, 2) NULL,
-    CUSTO_HORA DECIMAL(10, 2) NULL,
-    CAPEP DECIMAL(10, 2) NULL,
-    IPREV DECIMAL(10, 2) NULL,
-    INSS DECIMAL(10, 2) NULL,
-    CX_PREVID DECIMAL(10, 2) NULL
+-- Criação da Tabela 'despesas'
+CREATE TABLE despesas (
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    ano SMALLINT NOT NULL,
+    mes DATE NOT NULL, --  '2022-01-01'
+    id_destino VARCHAR(20),
+    id_centro_de_custos VARCHAR(20),
+    id_natureza_despesa VARCHAR(20),
+    area_de_atuacao VARCHAR(100),
+    atribuicao VARCHAR(100), 
+    contabilidade_do_gasto VARCHAR(50),
+    favorecido VARCHAR(255),
+    elementos_de_custo VARCHAR(255),
+    conta_contabil VARCHAR(50),
+    custo DECIMAL(12, 2) NOT NULL -- DECIMAL para valores monetários
 );

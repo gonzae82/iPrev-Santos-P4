@@ -7,7 +7,7 @@ Este projeto implementa uma solução tecnológica para o monitoramento e análi
 A solução é composta por três partes principais:
 1.  **Banco de Dados MySQL (Docker):** Um banco de dados containerizado que armazena todos os dados de custos.
 2.  **Importador de Dados (Streamlit):** Uma aplicação web (`app.py`) para carregar planilhas de dados, processá-las e inseri-las no banco de dados.
-3.  **Análise Preditiva (Jupyter Notebook):** Um notebook (`notebook_analise.ipynb`) para análise exploratória e desenvolvimento de um modelo preditivo de custos.
+3.  **Análise Preditiva (Meta Prophet):** Um notebook (`predicao_custos.py`) para análise exploratória e desenvolvimento de um modelo preditivo de custos.
 
 ## Pré-requisitos
 

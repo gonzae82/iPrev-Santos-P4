@@ -18,6 +18,7 @@ Os resultados são apresentados em dashboards interativos construídos com **Pow
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=yellow)](https://www.python.org/)
 
+
 ## Tecnologias Utilizadas
 <div>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original-wordmark.svg" alt="Python" title="Python" width="90" height="80"/>
