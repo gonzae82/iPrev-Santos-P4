@@ -59,8 +59,8 @@ def process_data(df):
 # --- NOVO: FUNÇÃO PARA CONSTRUIR O LINK ---
 def build_prediction_link():
     
-    host = "localhost"
-    PRED_PORT = "8502"
+    host = "iprev.elido.com.br"
+    PRED_PORT = "15502"
     PRED_PATH = ""
     
     # Constrói o link completo com o host e porta fixados

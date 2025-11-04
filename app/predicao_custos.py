@@ -95,7 +95,7 @@ def run_forecasting(df_history, periods=12):
 
 # --- 3. INTERFACE DO STREAMLIT ---
 st.set_page_config(page_title="Predição de Custos", layout="wide")
-st.title("🔮 Predição de Custos Futuros")
+st.title("🔮 Predição de Custos Futuros - Prophet")
 st.markdown("---")
 
 # Carregar dados (apenas uma vez, no início)
