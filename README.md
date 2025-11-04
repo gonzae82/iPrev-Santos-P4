@@ -14,6 +14,9 @@ O objetivo é solucionar os desafios enfrentados pela instituição na integraç
 Os resultados são apresentados em dashboards interativos construídos com **Power BI**, fornecendo visualizações inteligentes que visam aumentar a eficiência da gestão, garantir a transparência e apoiar a tomada de decisão estratégica no setor público.
 <br><br>
 
+## Acesso a Aplicação
+http://iprev.elido.com.br:15501/
+
 ## Badges
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=yellow)](https://www.python.org/)
@@ -47,7 +50,6 @@ Os resultados são apresentados em dashboards interativos construídos com **Pow
 - MARIA JOSE DE OLIVEIRA PERES
 - MICHELE DA SILVA LUCHETTA ASSUNCAO
 - RAFAEL FACHINI MORATELLI
-
 
 <br><br><br>
 
