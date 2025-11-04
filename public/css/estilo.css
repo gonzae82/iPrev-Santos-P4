@@ -1,0 +1,138 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container-central {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+.principal{
+    max-width: 80%;
+    margin-left:20px;
+}
+
+.conteudo {
+    position: absolute;
+    top: 50px; /* Ajuste conforme a altura do cabeçalho */
+    bottom: 90px;/* Ajuste conforme a altura do rodapé */
+    left: 0;
+    right: 0;
+    overflow-y: auto; /* Permite rolagem vertical */
+    padding: 20px;
+}
+
+.centro {
+    height: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;    /* Centraliza verticalmente */    
+}
+
+.logo-central {
+    padding: 20px; /* Exemplo de padding */
+    max-width: 100%;  /* Garante que a imagem não ultrapasse a largura da div */
+    max-height: 100%; /* Garante que a imagem não ultrapasse a altura da div */
+    object-fit: contain; /* Mantém a proporção da imagem */
+}
+
+
+form {
+    width: 100%;
+}
+
+
+
+.login-container {
+    text-align: center;    
+}
+
+.login-form {
+    display: display-inline-block;
+    text-align: left;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.mensagem{
+    color:red;
+    margin-top:20px;
+}
+
+/* Remove the navbar's default margin-bottom and rounded borders */
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+    height: 100vh;
+    /* Set height to 100% of the viewport height */
+}
+
+/* Set gray background color and 100% height */
+.sidenav {
+    padding-top: 20px;
+    background-color: #f1f1f1;
+    height: 100%;
+}
+
+.navbar-collapse {
+    z-index: 10000;
+    position: relative;
+}
+
+
+.tabela {
+    overflow: auto; 
+    height: 500px;
+}
+
+/* Set black background color, white text and some padding */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+
+    .row.content {
+        height: auto;
+    }
+}
+
+
+/*Para identificar linhas cadastradas no banco de dados*/
+.registrado {
+    background-color: #f2f2f2; /* Cor cinza claro */                    
+}
+
+
+#demonstrativo thead th {
+    text-align: center;
+}
